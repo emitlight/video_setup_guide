@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   PREVIEW_DEFAULT_IMAGE_SRC,
   PRODUCTION_INFO,
@@ -57,6 +57,14 @@ function WarningIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 // ──────────────── Color Config ────────────────
 
 function renderNoteLine(note: NoteLine) {
@@ -103,6 +111,8 @@ const colorConfig = {
     dot: 'bg-[oklch(0.65_0.18_150)]',
   },
 };
+
+const CHECKLIST_STORAGE_KEY = 'video-setup-guide-checklist-v1';
 
 // ──────────────── Preview Column (가운데 예비 영역: 확대 보기) ────────────────
 
@@ -164,11 +174,15 @@ function SectionColumn({
   index,
   onImageStepClick,
   selectedImageSrc,
+  checkedItems = {},
+  onCheckItemToggle,
 }: {
   section: Section;
   index: number;
   onImageStepClick?: (src: string, title: string) => void;
   selectedImageSrc?: string;
+  checkedItems?: Record<string, boolean>;
+  onCheckItemToggle?: (itemKey: string) => void;
 }) {
   const c = colorConfig[section.color];
   const Icon =
@@ -321,20 +335,38 @@ function SectionColumn({
               체크리스트
             </div>
             <div className="flex flex-col gap-[4px]">
-              {section.checkItems.map((item: CheckItem) => (
-                <label key={item.id} className="flex items-center gap-2 cursor-pointer group">
-                  <div
-                    className={`w-[12px] h-[12px] rounded-[2px] border-2 ${c.border} flex-shrink-0 flex items-center justify-center bg-transparent group-hover:bg-primary/10 transition-colors`}
-                    style={{ minWidth: 12, minHeight: 12 }}
-                  />
-                  <span className="text-foreground/85 text-[11px] leading-tight flex-1">{item.label}</span>
-                  {item.warning && (
-                    <span className="text-[oklch(0.72_0.18_50)] flex-shrink-0">
-                      <WarningIcon />
+              {section.checkItems.map((item: CheckItem) => {
+                const itemKey = `${section.id}:${item.id}`;
+                const isChecked = checkedItems[itemKey] === true;
+
+                return (
+                  <label key={item.id} className="flex items-center gap-2 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      className="sr-only"
+                      checked={isChecked}
+                      readOnly={!onCheckItemToggle}
+                      onChange={() => onCheckItemToggle?.(itemKey)}
+                    />
+                    <div
+                      className={`w-[12px] h-[12px] rounded-[2px] border-2 ${c.border} flex-shrink-0 flex items-center justify-center transition-colors ${
+                        isChecked ? `${c.header} ${c.headerText}` : 'bg-transparent group-hover:bg-primary/10'
+                      }`}
+                      style={{ minWidth: 12, minHeight: 12 }}
+                    >
+                      {isChecked ? <CheckIcon /> : null}
+                    </div>
+                    <span className="text-foreground/85 text-[11px] leading-tight flex-1">
+                      {item.label}
                     </span>
-                  )}
-                </label>
-              ))}
+                    {item.warning && (
+                      <span className="text-[oklch(0.72_0.18_50)] flex-shrink-0">
+                        <WarningIcon />
+                      </span>
+                    )}
+                  </label>
+                );
+              })}
             </div>
           </div>
         )}
@@ -376,6 +408,33 @@ export default function GuideTemplate() {
     src: PREVIEW_DEFAULT_IMAGE_SRC,
     title: firstStep?.title ?? '① 맥 미니 HDMI → 4K 송출장비 IN',
   });
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+
+    try {
+      const stored = window.localStorage.getItem(CHECKLIST_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify(checkedItems));
+    } catch {
+      // localStorage can be unavailable in private browsing or restricted environments.
+    }
+  }, [checkedItems]);
+
+  const toggleCheckItem = (itemKey: string) => {
+    setCheckedItems((current) => ({
+      ...current,
+      [itemKey]: !current[itemKey],
+    }));
+  };
 
   const renderPrintSheet = (page: 1 | 2) => (
     <div
@@ -421,7 +480,7 @@ export default function GuideTemplate() {
             overflow: 'hidden',
           }}
         >
-          <SectionColumn section={SECTION_MAC_MINI} index={0} selectedImageSrc={preview.src} />
+          <SectionColumn section={SECTION_MAC_MINI} index={0} selectedImageSrc={preview.src} checkedItems={checkedItems} />
           <PreviewColumn index={1} imageSrc={preview.src} caption={preview.title} />
         </div>
       ) : (
@@ -433,7 +492,7 @@ export default function GuideTemplate() {
             overflow: 'hidden',
           }}
         >
-          <SectionColumn section={SECTION_OBS} index={2} />
+          <SectionColumn section={SECTION_OBS} index={2} checkedItems={checkedItems} />
         </div>
       )}
 
@@ -524,6 +583,8 @@ export default function GuideTemplate() {
               index={0}
               selectedImageSrc={preview.src}
               onImageStepClick={(src, title) => setPreview({ src, title })}
+              checkedItems={checkedItems}
+              onCheckItemToggle={toggleCheckItem}
             />
             <PreviewColumn index={1} imageSrc={preview.src} caption={preview.title} />
           </div>
@@ -536,7 +597,12 @@ export default function GuideTemplate() {
               overflow: 'hidden',
             }}
           >
-            <SectionColumn section={SECTION_OBS} index={2} />
+            <SectionColumn
+              section={SECTION_OBS}
+              index={2}
+              checkedItems={checkedItems}
+              onCheckItemToggle={toggleCheckItem}
+            />
           </div>
         )}
 
