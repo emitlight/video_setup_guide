@@ -377,8 +377,84 @@ export default function GuideTemplate() {
     title: firstStep?.title ?? '① 맥 미니 HDMI → 4K 송출장비 IN',
   });
 
+  const renderPrintSheet = (page: 1 | 2) => (
+    <div
+      className="print-sheet bg-card text-foreground"
+      style={{
+        width: '297mm',
+        height: '210mm',
+        minHeight: '210mm',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      <div
+        className="flex items-center justify-between px-4 py-[6px] border-b border-border/60"
+        style={{ background: 'oklch(0.94 0.008 200)', flexShrink: 0 }}
+      >
+        <div className="flex items-center gap-3">
+          <div className="flex gap-[3px] items-center">
+            <div className="w-[3px] h-5 bg-[oklch(0.60_0.20_190)] rounded-full" />
+            <div className="w-[3px] h-5 bg-[oklch(0.72_0.18_50)] rounded-full" />
+            <div className="w-[3px] h-5 bg-[oklch(0.65_0.18_150)] rounded-full" />
+          </div>
+          <span className="font-bold text-[14.3px] text-foreground tracking-wide">{info.title}</span>
+          <span className="font-mono text-[11px] text-muted-foreground bg-muted/30 px-1.5 py-0.5 rounded">{info.version}</span>
+        </div>
+
+        <div className="flex items-center gap-4 text-[11.55px] text-muted-foreground">
+          <span>
+            <span className="text-muted-foreground/50 mr-1">날짜</span>
+            <span className="font-mono text-foreground/70">{info.date}</span>
+          </span>
+        </div>
+      </div>
+
+      {page === 1 ? (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1.2fr 1fr',
+            flex: 1,
+            overflow: 'hidden',
+          }}
+        >
+          <SectionColumn section={SECTION_MAC_MINI} index={0} selectedImageSrc={preview.src} />
+          <PreviewColumn index={1} imageSrc={preview.src} caption={preview.title} />
+        </div>
+      ) : (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            flex: 1,
+            overflow: 'hidden',
+          }}
+        >
+          <SectionColumn section={SECTION_OBS} index={2} />
+        </div>
+      )}
+
+      <div
+        className="flex items-center justify-between px-4 py-[5px] border-t border-border/60"
+        style={{ background: 'oklch(0.94 0.008 200)', flexShrink: 0 }}
+      >
+        <div className="flex items-center gap-3 text-[10.45px] text-muted-foreground/50">
+          <span className="font-mono">© {new Date().getFullYear()} Production Crew</span>
+          <span>·</span>
+          <span>무단 복제 금지 · Internal Use Only</span>
+        </div>
+        <div className="flex items-center gap-2 text-[10.45px] text-muted-foreground/40">
+          <span className="font-mono">{page} / 2</span>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-start pt-3 pb-1 px-4 gap-3">
+    <div className="print-root min-h-screen bg-background flex flex-col items-center justify-start pt-3 pb-1 px-4 gap-3">
 
       {/* Print hint */}
       <div className="text-muted-foreground/50 text-[13.2px] flex items-center gap-2 print:hidden">
@@ -397,7 +473,7 @@ export default function GuideTemplate() {
       {/* ──── A4 Landscape Sheet ──── */}
       <div
         id="print-sheet"
-        className="bg-card text-foreground"
+        className="screen-only bg-card text-foreground"
         style={{
           width: '297mm',
           height: '210mm',
@@ -494,6 +570,11 @@ export default function GuideTemplate() {
         </div>
       </div>
 
+      <div className="print-only">
+        {renderPrintSheet(1)}
+        {renderPrintSheet(2)}
+      </div>
+
       {/* Print styles hint */}
       <div className="text-muted-foreground/40 text-[12.1px] max-w-[297mm] print:hidden leading-relaxed text-center mt-1">
         💡 인쇄 시 "배경 그래픽 포함" 옵션을 켜야 색상이 정확하게 출력됩니다. 여백은 "없음(최소)"으로 설정하세요.
@@ -505,8 +586,13 @@ export default function GuideTemplate() {
           @page { size: A4 landscape; margin: 0; }
           body { margin: 0; padding: 0; background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .print\\:hidden { display: none !important; }
-          #print-sheet { box-shadow: none !important; width: 297mm !important; height: 210mm !important; }
+          .print-root { display: block !important; min-height: auto !important; padding: 0 !important; gap: 0 !important; background: #fff !important; }
+          .screen-only { display: none !important; }
+          .print-only { display: block !important; }
+          .print-sheet { box-shadow: none !important; width: 297mm !important; height: 210mm !important; page-break-after: always; break-after: page; }
+          .print-sheet:last-child { page-break-after: auto; break-after: auto; }
         }
+        .print-only { display: none; }
       `}</style>
     </div>
   );
