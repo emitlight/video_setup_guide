@@ -128,14 +128,14 @@ function PreviewColumn({
           <SpareIcon />
         </span>
         <div>
-          <div className={`${c.headerText} font-bold text-sm leading-tight tracking-wide uppercase`}>
+          <div className={`${c.headerText} font-bold text-[15.4px] leading-tight tracking-wide uppercase`}>
             맥 미니 세팅
           </div>
-          <div className={`${c.headerText} font-semibold text-base leading-tight`}>
+          <div className={`${c.headerText} font-semibold text-[17.6px] leading-tight`}>
             확대 미리보기
           </div>
         </div>
-        <div className={`ml-auto ${c.headerText} opacity-60 font-mono text-xs`}>
+        <div className={`ml-auto ${c.headerText} opacity-60 font-mono text-[13.2px]`}>
           {String(index + 1).padStart(2, '0')} / 03
         </div>
       </div>
@@ -148,7 +148,7 @@ function PreviewColumn({
           />
         </div>
         {caption ? (
-          <p className="text-center text-[14px] font-bold text-muted-foreground mt-2 px-1 leading-snug shrink-0">
+          <p className="text-center text-[15.4px] font-bold text-muted-foreground mt-2 px-1 leading-snug shrink-0">
             {caption}
           </p>
         ) : null}
@@ -193,22 +193,22 @@ function SectionColumn({
             <Icon />
           </span>
           <div>
-            <div className={`${c.headerText} font-bold text-sm leading-tight tracking-wide uppercase`}>
+            <div className={`${c.headerText} font-bold text-[15.4px] leading-tight tracking-wide uppercase`}>
               {section.subtitle}
             </div>
-            <div className={`${c.headerText} font-semibold text-base leading-tight`}>
+            <div className={`${c.headerText} font-semibold text-[17.6px] leading-tight`}>
               {section.title}
             </div>
           </div>
-          <div className={`ml-auto ${c.headerText} opacity-60 font-mono text-xs`}>
+          <div className={`ml-auto ${c.headerText} opacity-60 font-mono text-[13.2px]`}>
             {String(index + 1).padStart(2, '0')} / 03
           </div>
         </div>
         <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-4 py-6 mx-3.5 mb-3 mt-1 rounded-sm border border-dashed border-border/60 bg-muted/15">
-          <span className="text-muted-foreground/50 text-[11px] text-center leading-relaxed">
+          <span className="text-muted-foreground/50 text-[12.1px] text-center leading-relaxed">
             A4 가로 3등분 유지용 빈 칸입니다.
             <br />
-            <span className="text-[10px] text-muted-foreground/40">필요 시 메모·도면·QR 등을 추가하세요.</span>
+            <span className="text-[11px] text-muted-foreground/40">필요 시 메모·도면·QR 등을 추가하세요.</span>
           </span>
         </div>
       </div>
@@ -233,14 +233,14 @@ function SectionColumn({
           <Icon />
         </span>
         <div>
-          <div className={`${c.headerText} ${section.color === 'cyan' ? 'font-medium' : 'font-bold'} text-sm leading-tight tracking-wide uppercase`}>
+          <div className={`${c.headerText} ${section.color === 'cyan' ? 'font-medium' : 'font-bold'} text-[15.4px] leading-tight tracking-wide uppercase`}>
             {section.subtitle}
           </div>
-          <div className={`${c.headerText} font-semibold text-base leading-tight`}>
+          <div className={`${c.headerText} font-semibold text-[17.6px] leading-tight`}>
             {section.title}
           </div>
         </div>
-        <div className={`ml-auto ${c.headerText} opacity-60 font-mono text-xs`}>
+        <div className={`ml-auto ${c.headerText} opacity-60 font-mono text-[13.2px]`}>
           {String(index + 1).padStart(2, '0')} / 03
         </div>
       </div>
@@ -249,11 +249,11 @@ function SectionColumn({
       <div className="flex flex-col gap-0 flex-1 min-h-0 overflow-hidden">
         {section.imageSteps?.length ? (
           <div className="px-4 pt-3 pb-3 mx-1 shrink-0 border-b border-border/30">
-            <div className={`text-[10px] font-semibold ${c.accent} uppercase tracking-widest mb-2 flex items-center gap-1.5`}>
+            <div className={`text-[11px] font-semibold ${c.accent} uppercase tracking-widest mb-2 flex items-center gap-1.5`}>
               <span className={`inline-block w-3 h-px ${c.dot}`} style={{ display: 'inline-block' }} />
               연결 가이드(사진)
               {onImageStepClick ? (
-                <span className="normal-case font-normal text-muted-foreground/80 text-[9px] ml-1">
+                <span className="normal-case font-normal text-muted-foreground/80 text-[9.9px] ml-1">
                   · 썸네일 클릭 시 가운데 확대
                 </span>
               ) : null}
@@ -263,7 +263,7 @@ function SectionColumn({
                 const isSelected = selectedImageSrc === step.imageSrc;
                 return (
                   <div key={step.id} className="rounded-sm border border-border/50 bg-background/80 p-1 min-w-0">
-                    <div className="text-[9px] font-semibold text-foreground/90 mb-0.5 leading-tight">{step.title}</div>
+                    <div className="text-[9.9px] font-semibold text-foreground/90 mb-0.5 leading-tight">{step.title}</div>
                     <button
                       type="button"
                       onClick={() => onImageStepClick?.(step.imageSrc, step.title)}
@@ -280,7 +280,7 @@ function SectionColumn({
                       />
                     </button>
                     {step.description && (
-                      <div className="text-[8.5px] text-muted-foreground mt-0.5 leading-tight">{step.description}</div>
+                      <div className="text-[9.35px] text-muted-foreground mt-0.5 leading-tight">{step.description}</div>
                     )}
                   </div>
                 );
@@ -292,7 +292,7 @@ function SectionColumn({
         {/* Settings Table */}
         {section.settings && (
           <div className="px-3.5 pt-2 pb-1 shrink-0">
-            <div className={`text-[10px] font-semibold ${c.accent} uppercase tracking-widest mb-1.5 flex items-center gap-1.5`}>
+            <div className={`text-[11px] font-semibold ${c.accent} uppercase tracking-widest mb-1.5 flex items-center gap-1.5`}>
               <span className={`inline-block w-3 h-px ${c.dot}`} style={{display:'inline-block'}}/>
               기본 설정값
             </div>
@@ -302,10 +302,10 @@ function SectionColumn({
                   key={i}
                   className={`flex items-center justify-between px-2.5 py-[4px] ${i % 2 === 0 ? 'bg-muted/30' : 'bg-card/20'} border-b border-border/40 last:border-b-0`}
                 >
-                  <span className="text-muted-foreground text-[10px] font-medium leading-none">{field.label}</span>
-                  <span className={`${c.accent} text-[10px] font-semibold leading-none text-right pl-1 ${field.mono ? 'font-mono' : ''}`}>
+                  <span className="text-muted-foreground text-[11px] font-medium leading-none">{field.label}</span>
+                  <span className={`${c.accent} text-[11px] font-semibold leading-none text-right pl-1 ${field.mono ? 'font-mono' : ''}`}>
                     {field.value}
-                    {field.unit && <span className="text-muted-foreground/60 text-[8px] ml-0.5">{field.unit}</span>}
+                    {field.unit && <span className="text-muted-foreground/60 text-[8.8px] ml-0.5">{field.unit}</span>}
                   </span>
                 </div>
               ))}
@@ -316,7 +316,7 @@ function SectionColumn({
         {/* Checklist */}
         {section.checkItems && (
           <div className="px-3.5 pt-1 pb-1 shrink-0">
-            <div className={`text-[10px] font-semibold ${c.accent} uppercase tracking-widest mb-1.5 flex items-center gap-1.5`}>
+            <div className={`text-[11px] font-semibold ${c.accent} uppercase tracking-widest mb-1.5 flex items-center gap-1.5`}>
               <span className={`inline-block w-3 h-px ${c.dot}`} style={{display:'inline-block'}}/>
               체크리스트
             </div>
@@ -327,7 +327,7 @@ function SectionColumn({
                     className={`w-[12px] h-[12px] rounded-[2px] border-2 ${c.border} flex-shrink-0 flex items-center justify-center bg-transparent group-hover:bg-primary/10 transition-colors`}
                     style={{ minWidth: 12, minHeight: 12 }}
                   />
-                  <span className="text-foreground/85 text-[10px] leading-tight flex-1">{item.label}</span>
+                  <span className="text-foreground/85 text-[11px] leading-tight flex-1">{item.label}</span>
                   {item.warning && (
                     <span className="text-[oklch(0.72_0.18_50)] flex-shrink-0">
                       <WarningIcon />
@@ -342,15 +342,15 @@ function SectionColumn({
         <div className="px-3.5 pt-1 pb-2 flex-1 min-h-0 flex flex-col justify-between gap-1.5">
           {section.notes && (
             <div className="shrink-0">
-              <div className={`text-[10px] font-semibold ${c.accent} uppercase tracking-widest mb-1 flex items-center gap-1.5`}>
+              <div className={`text-[11px] font-semibold ${c.accent} uppercase tracking-widest mb-1 flex items-center gap-1.5`}>
                 <span className={`inline-block w-3 h-px ${c.dot}`} style={{display:'inline-block'}}/>
                 주의 / 메모
               </div>
               <div className="flex flex-col gap-[3px]">
                 {section.notes.map((note: NoteLine, i: number) => (
                   <div key={i} className="flex items-start gap-1.5">
-                    <span className={`${c.accent} text-[10px] leading-none mt-[1px] flex-shrink-0`}>›</span>
-                    <span className="text-muted-foreground text-[9.5px] leading-tight">{renderNoteLine(note)}</span>
+                    <span className={`${c.accent} text-[11px] leading-none mt-[1px] flex-shrink-0`}>›</span>
+                    <span className="text-muted-foreground text-[10.45px] leading-tight">{renderNoteLine(note)}</span>
                   </div>
                 ))}
               </div>
@@ -381,7 +381,7 @@ export default function GuideTemplate() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-start pt-3 pb-1 px-4 gap-3">
 
       {/* Print hint */}
-      <div className="text-muted-foreground/50 text-xs flex items-center gap-2 print:hidden">
+      <div className="text-muted-foreground/50 text-[13.2px] flex items-center gap-2 print:hidden">
         <span className="font-mono">A4 가로 (297 × 210mm)</span>
         <span>·</span>
         <span>{currentPage === 1 ? '1페이지 (맥미니 세팅)' : '2페이지 (OBS 세팅)'}</span>
@@ -421,11 +421,11 @@ export default function GuideTemplate() {
               <div className="w-[3px] h-5 bg-[oklch(0.72_0.18_50)] rounded-full" />
               <div className="w-[3px] h-5 bg-[oklch(0.65_0.18_150)] rounded-full" />
             </div>
-            <span className="font-bold text-[13px] text-foreground tracking-wide">{info.title}</span>
-            <span className="font-mono text-[10px] text-muted-foreground bg-muted/30 px-1.5 py-0.5 rounded">{info.version}</span>
+            <span className="font-bold text-[14.3px] text-foreground tracking-wide">{info.title}</span>
+            <span className="font-mono text-[11px] text-muted-foreground bg-muted/30 px-1.5 py-0.5 rounded">{info.version}</span>
           </div>
 
-          <div className="flex items-center gap-4 text-[10.5px] text-muted-foreground">
+          <div className="flex items-center gap-4 text-[11.55px] text-muted-foreground">
             <span>
               <span className="text-muted-foreground/50 mr-1">날짜</span>
               <span className="font-mono text-foreground/70">{info.date}</span>
@@ -469,23 +469,23 @@ export default function GuideTemplate() {
           className="flex items-center justify-between px-4 py-[5px] border-t border-border/60"
           style={{ background: 'oklch(0.94 0.008 200)', flexShrink: 0 }}
         >
-          <div className="flex items-center gap-3 text-[9.5px] text-muted-foreground/50">
+          <div className="flex items-center gap-3 text-[10.45px] text-muted-foreground/50">
             <span className="font-mono">© {new Date().getFullYear()} Production Crew</span>
             <span>·</span>
             <span>무단 복제 금지 · Internal Use Only</span>
           </div>
-          <div className="flex items-center gap-2 text-[9.5px] text-muted-foreground/40">
+          <div className="flex items-center gap-2 text-[10.45px] text-muted-foreground/40">
             {currentPage === 1 ? (
               <button
                 onClick={() => setCurrentPage(2)}
-                className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[11px] font-bold shadow-sm hover:opacity-90 transition-opacity print:hidden"
+                className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[12.1px] font-bold shadow-sm hover:opacity-90 transition-opacity print:hidden"
               >
                 녹화 툴 세팅
               </button>
             ) : (
               <button
                 onClick={() => setCurrentPage(1)}
-                className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[11px] font-semibold shadow-sm hover:opacity-90 transition-opacity print:hidden"
+                className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[12.1px] font-semibold shadow-sm hover:opacity-90 transition-opacity print:hidden"
               >
                 맥 미니 세팅으로
               </button>
@@ -495,7 +495,7 @@ export default function GuideTemplate() {
       </div>
 
       {/* Print styles hint */}
-      <div className="text-muted-foreground/40 text-[11px] max-w-[297mm] print:hidden leading-relaxed text-center mt-1">
+      <div className="text-muted-foreground/40 text-[12.1px] max-w-[297mm] print:hidden leading-relaxed text-center mt-1">
         💡 인쇄 시 "배경 그래픽 포함" 옵션을 켜야 색상이 정확하게 출력됩니다. 여백은 "없음(최소)"으로 설정하세요.
       </div>
 
