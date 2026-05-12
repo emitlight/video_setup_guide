@@ -164,13 +164,11 @@ function SectionColumn({
   index,
   onImageStepClick,
   selectedImageSrc,
-  reserveImageGuideSpace = false,
 }: {
   section: Section;
   index: number;
   onImageStepClick?: (src: string, title: string) => void;
   selectedImageSrc?: string;
-  reserveImageGuideSpace?: boolean;
 }) {
   const c = colorConfig[section.color];
   const Icon =
@@ -289,10 +287,6 @@ function SectionColumn({
               })}
             </div>
           </div>
-        ) : reserveImageGuideSpace ? (
-          <div className="px-4 pt-3 pb-3 mx-1 shrink-0 border-b border-border/30">
-            <div className="h-[86mm]" />
-          </div>
         ) : null}
 
         {/* Settings Table */}
@@ -383,27 +377,24 @@ export default function GuideTemplate() {
     title: firstStep?.title ?? '① 맥 미니 HDMI → 4K 송출장비 IN',
   });
 
-  const renderSheet = (page: 1 | 2, printMode = false) => (
+  const renderPrintSheet = (page: 1 | 2) => (
     <div
-      className={`print-sheet bg-card text-foreground ${printMode ? '' : 'screen-only'}`}
+      className="print-sheet bg-card text-foreground"
       style={{
         width: '297mm',
         height: '210mm',
         minHeight: '210mm',
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: printMode ? 'none' : '0 8px 40px oklch(0 0 0 / 0.5)',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      {/* ── Top Meta Bar ── */}
       <div
         className="flex items-center justify-between px-4 py-[6px] border-b border-border/60"
         style={{ background: 'oklch(0.94 0.008 200)', flexShrink: 0 }}
       >
         <div className="flex items-center gap-3">
-          {/* Logo mark */}
           <div className="flex gap-[3px] items-center">
             <div className="w-[3px] h-5 bg-[oklch(0.60_0.20_190)] rounded-full" />
             <div className="w-[3px] h-5 bg-[oklch(0.72_0.18_50)] rounded-full" />
@@ -421,7 +412,6 @@ export default function GuideTemplate() {
         </div>
       </div>
 
-      {/* ── Page Content Grid ── */}
       {page === 1 ? (
         <div
           style={{
@@ -431,12 +421,7 @@ export default function GuideTemplate() {
             overflow: 'hidden',
           }}
         >
-          <SectionColumn
-            section={SECTION_MAC_MINI}
-            index={0}
-            selectedImageSrc={preview.src}
-            onImageStepClick={printMode ? undefined : (src, title) => setPreview({ src, title })}
-          />
+          <SectionColumn section={SECTION_MAC_MINI} index={0} selectedImageSrc={preview.src} />
           <PreviewColumn index={1} imageSrc={preview.src} caption={preview.title} />
         </div>
       ) : (
@@ -448,11 +433,10 @@ export default function GuideTemplate() {
             overflow: 'hidden',
           }}
         >
-          <SectionColumn section={SECTION_OBS} index={2} reserveImageGuideSpace />
+          <SectionColumn section={SECTION_OBS} index={2} />
         </div>
       )}
 
-      {/* ── Bottom Bar ── */}
       <div
         className="flex items-center justify-between px-4 py-[5px] border-t border-border/60"
         style={{ background: 'oklch(0.94 0.008 200)', flexShrink: 0 }}
@@ -463,30 +447,14 @@ export default function GuideTemplate() {
           <span>무단 복제 금지 · Internal Use Only</span>
         </div>
         <div className="flex items-center gap-2 text-[9.5px] text-muted-foreground/40">
-          {printMode ? (
-            <span className="font-mono">{page} / 2</span>
-          ) : page === 1 ? (
-            <button
-              onClick={() => setCurrentPage(2)}
-              className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[11px] font-bold shadow-sm hover:opacity-90 transition-opacity print:hidden"
-            >
-              녹화 툴 세팅
-            </button>
-          ) : (
-            <button
-              onClick={() => setCurrentPage(1)}
-              className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[11px] font-semibold shadow-sm hover:opacity-90 transition-opacity print:hidden"
-            >
-              맥 미니 세팅으로
-            </button>
-          )}
+          <span className="font-mono">{page} / 2</span>
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="print-root min-h-screen bg-background flex flex-col items-center justify-start pt-3 pb-1 px-4 gap-3">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-start pt-3 pb-1 px-4 gap-3">
 
       {/* Print hint */}
       <div className="text-muted-foreground/50 text-xs flex items-center gap-2 print:hidden">
@@ -502,13 +470,109 @@ export default function GuideTemplate() {
         </button>
       </div>
 
-      {/* ──── Screen Sheet ──── */}
-      {renderSheet(currentPage)}
+      {/* ──── A4 Landscape Sheet ──── */}
+      <div
+        id="print-sheet"
+        className="screen-only bg-card text-foreground"
+        style={{
+          width: '297mm',
+          height: '210mm',
+          minHeight: '210mm',
+          display: 'flex',
+          flexDirection: 'column',
+          boxShadow: '0 8px 40px oklch(0 0 0 / 0.5)',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        {/* ── Top Meta Bar ── */}
+        <div
+          className="flex items-center justify-between px-4 py-[6px] border-b border-border/60"
+          style={{ background: 'oklch(0.94 0.008 200)', flexShrink: 0 }}
+        >
+          <div className="flex items-center gap-3">
+            {/* Logo mark */}
+            <div className="flex gap-[3px] items-center">
+              <div className="w-[3px] h-5 bg-[oklch(0.60_0.20_190)] rounded-full" />
+              <div className="w-[3px] h-5 bg-[oklch(0.72_0.18_50)] rounded-full" />
+              <div className="w-[3px] h-5 bg-[oklch(0.65_0.18_150)] rounded-full" />
+            </div>
+            <span className="font-bold text-[13px] text-foreground tracking-wide">{info.title}</span>
+            <span className="font-mono text-[10px] text-muted-foreground bg-muted/30 px-1.5 py-0.5 rounded">{info.version}</span>
+          </div>
 
-      {/* ──── Print Sheets ──── */}
+          <div className="flex items-center gap-4 text-[10.5px] text-muted-foreground">
+            <span>
+              <span className="text-muted-foreground/50 mr-1">날짜</span>
+              <span className="font-mono text-foreground/70">{info.date}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* ── Page Content Grid ── */}
+        {currentPage === 1 ? (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1.2fr 1fr',
+              flex: 1,
+              overflow: 'hidden',
+            }}
+          >
+            <SectionColumn
+              section={SECTION_MAC_MINI}
+              index={0}
+              selectedImageSrc={preview.src}
+              onImageStepClick={(src, title) => setPreview({ src, title })}
+            />
+            <PreviewColumn index={1} imageSrc={preview.src} caption={preview.title} />
+          </div>
+        ) : (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              flex: 1,
+              overflow: 'hidden',
+            }}
+          >
+            <SectionColumn section={SECTION_OBS} index={2} />
+          </div>
+        )}
+
+        {/* ── Bottom Bar ── */}
+        <div
+          className="flex items-center justify-between px-4 py-[5px] border-t border-border/60"
+          style={{ background: 'oklch(0.94 0.008 200)', flexShrink: 0 }}
+        >
+          <div className="flex items-center gap-3 text-[9.5px] text-muted-foreground/50">
+            <span className="font-mono">© {new Date().getFullYear()} Production Crew</span>
+            <span>·</span>
+            <span>무단 복제 금지 · Internal Use Only</span>
+          </div>
+          <div className="flex items-center gap-2 text-[9.5px] text-muted-foreground/40">
+            {currentPage === 1 ? (
+              <button
+                onClick={() => setCurrentPage(2)}
+                className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[11px] font-bold shadow-sm hover:opacity-90 transition-opacity print:hidden"
+              >
+                녹화 툴 세팅
+              </button>
+            ) : (
+              <button
+                onClick={() => setCurrentPage(1)}
+                className="rounded-md bg-[oklch(0.65_0.18_150)] text-[oklch(0.12_0.05_150)] px-3 py-1.5 text-[11px] font-semibold shadow-sm hover:opacity-90 transition-opacity print:hidden"
+              >
+                맥 미니 세팅으로
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="print-only">
-        {renderSheet(1, true)}
-        {renderSheet(2, true)}
+        {renderPrintSheet(1)}
+        {renderPrintSheet(2)}
       </div>
 
       {/* Print styles hint */}
@@ -522,7 +586,6 @@ export default function GuideTemplate() {
           @page { size: A4 landscape; margin: 0; }
           body { margin: 0; padding: 0; background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .print\\:hidden { display: none !important; }
-          .print-root { display: block !important; min-height: auto !important; padding: 0 !important; gap: 0 !important; background: #fff !important; }
           .screen-only { display: none !important; }
           .print-only { display: block !important; }
           .print-sheet { box-shadow: none !important; width: 297mm !important; height: 210mm !important; page-break-after: always; break-after: page; }
