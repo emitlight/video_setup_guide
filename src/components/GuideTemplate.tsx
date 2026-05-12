@@ -340,14 +340,14 @@ function SectionColumn({
                 const isChecked = checkedItems[itemKey] === true;
 
                 return (
-                  <label key={item.id} className="flex items-center gap-2 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      className="sr-only"
-                      checked={isChecked}
-                      readOnly={!onCheckItemToggle}
-                      onChange={() => onCheckItemToggle?.(itemKey)}
-                    />
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => onCheckItemToggle?.(itemKey)}
+                    className="flex items-center gap-2 cursor-pointer group text-left disabled:cursor-default"
+                    aria-pressed={isChecked}
+                    disabled={!onCheckItemToggle}
+                  >
                     <div
                       className={`w-[12px] h-[12px] rounded-[2px] border-2 ${c.border} flex-shrink-0 flex items-center justify-center transition-colors ${
                         isChecked ? `${c.header} ${c.headerText}` : 'bg-transparent group-hover:bg-primary/10'
@@ -364,7 +364,7 @@ function SectionColumn({
                         <WarningIcon />
                       </span>
                     )}
-                  </label>
+                  </button>
                 );
               })}
             </div>
